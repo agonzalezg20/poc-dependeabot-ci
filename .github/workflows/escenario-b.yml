@@ -1,0 +1,25 @@
+name: Escenario B - Persistido (Con Push)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  push-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Crear manifiesto temporal
+        run: |
+          mkdir -p temp-tracked
+          echo '{"name":"temp-app","version":"1.0.0","dependencies":{"lodash":"4.17.15"}}' > temp-tracked/package.json
+
+      - name: Subir archivo a Git
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: subir manifiesto temporal a Git"
+          file_pattern: "temp-tracked/package.json"
